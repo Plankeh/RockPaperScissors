@@ -1,6 +1,31 @@
+let playerScore = 0;
+let computerScore = 0;
+let draws = 0;
+let roundResult;
+
+function chooseRock() {
+    playerSelection = "ROCK";
+    roundResult = playRound(playerSelection, getComputerChoice());
+    updateScore();
+    announceResult();
+}
+
+function choosePaper() {
+    playerSelection = "PAPER";
+    roundResult = playRound(playerSelection, getComputerChoice());
+    updateScore();
+    announceResult();
+}
+
+function chooseScissors() {
+    playerSelection = "SCISSORS";
+    roundResult = playRound(playerSelection, getComputerChoice());
+    updateScore();
+    announceResult();
+}
+
 function getComputerChoice() {
     let computerChoiceNumber = Math.floor(Math.random() * 3 + 1);
-    console.log(computerChoiceNumber);
     let computerChoice;
 
     if (computerChoiceNumber === 1) {
@@ -13,68 +38,78 @@ function getComputerChoice() {
         computerChoice = "Paper";
     }
     computerChoice = computerChoice.toUpperCase();
-    console.log(computerChoice);
     return computerChoice;
 }
 
 function playRound(playerSelection, computerSelection) {
-    playerSelection = prompt('Choose "Rock", "Paper", or "Scissors"');
-    playerSelection = playerSelection.toUpperCase();
-    if ((playerSelection === "ROCK") || (playerSelection === "PAPER") || (playerSelection === "SCISSORS")) {
-        computerSelection = getComputerChoice();
         let outcome;
         if ((playerSelection === "ROCK") && (computerSelection === "PAPER" )) {
             outcome = "You lose! Paper beats rock.";
+            computerScore++;
         }
         else if ((playerSelection === "ROCK") && (computerSelection === "SCISSORS" )) {
             outcome = "You win! Rock beats scissors.";
+            playerScore++;
         }
         else if ((playerSelection === "ROCK") && (computerSelection === "ROCK" )) {
             outcome = "Draw! Rock is equal to rock.";
+            draws++;
         }
         else if ((playerSelection === "SCISSORS") && (computerSelection === "PAPER" )) {
             outcome = "You win! Scissors beats paper.";
+            playerScore++;
         } 
         else if ((playerSelection === "SCISSORS" ) && (computerSelection === "SCISSORS" )) {
             outcome = "Draw! Scissors is equal to scissors.";
+            draws++;
         }
         else if ((playerSelection === "SCISSORS" ) && (computerSelection === "ROCK" )) {
             outcome = "You lose! Rock beats scissors.";
+            computerScore++;
         }
         else if ((playerSelection === "PAPER" ) && (computerSelection === "PAPER" )) {
             outcome = "Draw! Paper equals paper.";
+            draws++;
         }
         else if ((playerSelection === "PAPER" ) && (computerSelection === "SCISSORS" )) {
             outcome = "You lose! Scissors beats paper.";
+            computerScore++;
         }
         else if ((playerSelection === "PAPER" ) && (computerSelection === "ROCK" )) {
             outcome = "You win! Paper beats rock.";
+            playerScore++;
         }
         return outcome;
     }
-    else {
-        alert("Please choose 'Rock', 'Paper', or 'Scissors'.");
-    }
+
+        function resetScore() {
+            playerScore = 0;
+            computerScore = 0;
+            draws = 0;
+        }
+
+function updateScore() {
+if (playerScore === 5) {
+    alert("Player wins!");
+    resetScore();
 }
-
-function playGame() {
-    let playerScore = 0;
-    let computerScore = 0;
-    let draws = 0;
-
-    for (let i = 1; i < 6; i++) {
-    let roundResult = playRound(); 
-    if (roundResult.substring(0, 5) === "You w") {
-        playerScore++;
-    }
-    else if (roundResult.substring(0, 5) === "You l") {
-        computerScore++;
-    }
-    else if (roundResult.substring(0, 5) === "Draw!") {
-        draws++;
-    }
-    console.log (`Player Score: ${playerScore}, Computer Score: ${computerScore}, Draws: ${draws}`);
-    }
+else if (computerScore === 5) {
+    alert("Computer wins!");
+    resetScore();
 }
-
-playGame();
+else if (draws === 5) {
+    alert("It's a draw!");
+    resetScore();
+}
+const scoreText = document.getElementById("practice");
+        const divScore = document.createElement('div');
+        divScore.textContent = `Player Score: ${playerScore} Computer Score: ${computerScore} Draws: ${draws}`;
+        scoreText.appendChild(divScore);
+}
+function announceResult() {
+    const containerDiv = document.getElementById("container");
+    const scoreText = document.getElementById("practice");
+    const resultText = document.createElement('div');
+    resultText.textContent = roundResult;
+    containerDiv.insertBefore(resultText, scoreText);
+}
